@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>moni</title>
+	<style>
+		canvas {
+			border: 1px solid black;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="600" height="600"></canvas>
+	<script>
+		var canvas = document.querySelector("canvas")
+		var ctx = canvas.getContext("2d")
+		var image = new Image()
+		image.src = "R/images/bird0_0.png"
+		
+		var x = 200
+		var y = 100
+		var dropf = 0 // 掉落帧号，从下落第1 帧开始计数
+		var f = 0 // 帧编号
+		var d = 0 // 度数
+		var isDropdown = false // 信号量
+		image.onload = function () {
+			setInterval(function () {
+				ctx.clearRect(0, 0, 600, 600) 
+				f ++
+				// 显示帧编号
+				ctx.font = "20px Monaco"
+				ctx.fillText(f,20,20)
+				// 如果信号量是真
+				if (isDropdown) {
+					d += 0.1
+					dropf ++
+					y = y + dropf * 1.4 // 每帧的变化是一个常数
+				}
+				
+				// 保存
+				ctx.save()
+				// 移动原点
+				ctx.translate(x + 24, y + 24)
+				ctx.rotate(d)
+				ctx.fillText(dropf, -24, -24)
+				ctx.drawImage(image, -24, -24)
+				ctx.restore()
+			}, 200)
+			
+		}
+		canvas.onclick = function () {
+			isDropdown = true
+		}
+	</script>
+</body>
+</html>
